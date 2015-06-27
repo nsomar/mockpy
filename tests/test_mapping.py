@@ -67,23 +67,6 @@ class MapperResponseTests(unittest.TestCase):
         assert response.headers["Content-type"] == "application/json; charset=utf-8"
 
 
-class MapFilterTests(unittest.TestCase):
-
-    def test_that_filter_yaml_correctly(self):
-        arr = config.filter_yml(["a.yml"])
-        assert "a.yml" in arr
-
-        arr = config.filter_yml(["a.yml", "b.yml"])
-        assert "a.yml" in arr
-        assert "b.yml" in arr
-
-    def test_that_filter_non_yaml_correctly(self):
-
-        arr = config.filter_yml(["a.yml", "b.yml.not"])
-        assert "a.yml" in arr
-        assert "b.yml.not" not in arr
-
-
 class CherryPyMapperTests(unittest.TestCase):
 
     def test_is_status_url(self):

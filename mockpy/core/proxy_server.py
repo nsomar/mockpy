@@ -11,6 +11,7 @@ from libmproxy.proxy.server import ProxyServer
 from libmproxy.protocol.http import HTTPRequest, HTTPResponse
 from netlib.odict import ODictCaseless
 
+from ..utils.config import *
 from ..models.mapping_items_manager import *
 
 
@@ -19,6 +20,7 @@ class MITMProxy(controller.Master):
         controller.Master.__init__(self, server)
         self.http_proxy = http_proxy
         self.handler = MappingItemsManager(inout_path, res_path)
+        success("Proxy server started")
 
     def handle_request(self, flow):
         request = flow.request.to_mapper_request()
@@ -33,7 +35,7 @@ class MITMProxy(controller.Master):
         response, request = mapping_item.response, mapping_item.request
         self.log_intercepted_request(flow, request)
 
-        response = self.get_proxy_response(response)
+        response = HTTPResponse.from_intercepted_response(response)
         flow.reply(response)
 
     def perform_http_request(self, flow):
@@ -47,7 +49,8 @@ class MITMProxy(controller.Master):
         response = self.perform_request(flow.request, proxy_settings[0], proxy_settings[1])
         flow.reply(response)
 
-    def perform_request(self, request, url, port):
+    @staticmethod
+    def perform_request(request, url, port):
         try:
             conn = httplib.HTTPConnection(url, port)
             headers = dict(request.headers.items())
@@ -64,27 +67,18 @@ class MITMProxy(controller.Master):
                                     headers=headers)
             return response
         except Exception as ex:
-            print("Error Happened")
-            print(ex)
-            print("method: %s\nurl: %s\nbody: --\nheaders: --" %
+            error("Error Happened")
+            error(ex)
+            error("method: %s\nurl: %s\nbody: --\nheaders: --" %
                   (request.method, request.url))
             return None
-
-    def get_proxy_response(self, response):
-        headers = ODictCaseless.from_httplib_headers(response.headers)
-        response = HTTPResponse(code=response.status,
-                                content=response.body_response(),
-                                msg="",
-                                httpversion=(1, 1),
-                                headers=headers)
-        return response
 
     """
         Logging
     """
     @staticmethod
     def log_intercepted_request(flow, request):
-        print("\nIntercepting request for URL %s"
+        info("\nIntercepting request for URL %s"
               "\nMatching:\n%s" % (flow.request.url, str(request)))
 
 
@@ -94,8 +88,9 @@ def start_proxy_server(port, inout_path, res_path, http_proxy):
     m = MITMProxy(server, inout_path, res_path, http_proxy)
 
     def signal_handler(signal, frame):
-        print("trying")
+        info("\nShutting down proxy server")
         m.shutdown()
+        success("Proxy server stopped")
         sys.exit(0)
 
     signal.signal(signal.SIGINT, signal_handler)
@@ -127,6 +122,15 @@ def from_httplib_headers(cls, headers):
 
     return odict
 
+def from_intercepted_response(cls, response):
+    headers = ODictCaseless.from_httplib_headers(response.headers)
+    response = cls(code=response.status,
+                   content=response.body_response(),
+                   msg="",
+                   httpversion=(1, 1),
+                   headers=headers)
+    return response
 
 HTTPRequest.to_mapper_request = to_mapper_request
 ODictCaseless.from_httplib_headers = classmethod(from_httplib_headers)
+HTTPResponse.from_intercepted_response = classmethod(from_intercepted_response)

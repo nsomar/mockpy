@@ -17,7 +17,8 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     "mock",
     "cherrypy",
-    "netlib"
+    "netlib",
+    "termcolor"
 ]
 
 test_requirements = [
@@ -59,7 +60,7 @@ setup(
     tests_require=test_requirements,
     entry_points={
         'console_scripts': [
-            'sample_cli=mockpy.mockpy:start',
+            'mockpy=mockpy.mockpy:start',
         ],
     },
 )

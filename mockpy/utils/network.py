@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 import subprocess, os, re, atexit, pprint
-
+from .config import *
 
 class NetworkConfig(object):
 
@@ -24,6 +24,9 @@ class NetworkConfig(object):
         self.proxy_settings = self.update_proxy_settings()
 
         apply_proxy_settings(self.proxy_settings)
+
+        self.log_old_proxy_if_needed()
+
         restore_on_exit(self.previous_proxy_settings)
 
     def update_proxy_settings(self):
@@ -43,8 +46,19 @@ class NetworkConfig(object):
 
             return ip, port, enabled
         except Exception as ex:
-            print(str(ex))
+            error(str(ex))
             return None
+
+    def log_old_proxy_if_needed(self):
+        self.log_proxy(self.previous_http_proxy, "HTTP")
+        self.log_proxy(self.previous_http_proxy, "HTTPS")
+
+    @staticmethod
+    def log_proxy(proxy, title):
+        if proxy is None:
+            return
+
+        info("Saving old %s proxy settings %s:%s" % (title, proxy[0], proxy[1]))
 
 
 """
@@ -101,9 +115,13 @@ def get_web_proxy(network_name, secure=False):
     Changing proxy settings
 """
 def apply_proxy_settings(settings):
+    try:
         for network_name in settings.keys():
             set_proxy(network_name, settings[network_name])
             set_proxy(network_name, settings[network_name], secure=True)
+    except KeyboardInterrupt:
+        error("Exiting...")
+        exit(0)
 
 
 def set_proxy(network_name, values, secure=False):
@@ -131,7 +149,8 @@ def turn_off_proxy_for_network(network_name, secure=False):
 """
 def restore_on_exit(proxy_settings):
     def exit_handler():
-        print("Restore network proxy")
+        print("Restoring network proxy")
+        warn("Note: sudo password may be asked to restore previous network http/https proxies\n")
         apply_proxy_settings(proxy_settings)
 
     atexit.register(exit_handler)
