@@ -1,0 +1,13 @@
+request:
+    method: GET
+    url: .*test4.*
+
+    headers:
+      Auth.*: B.*123
+
+response:
+    status: 200
+    body: The value is a long string that can be very very very long!!!!
+
+    headers:
+      Content-type: application/json

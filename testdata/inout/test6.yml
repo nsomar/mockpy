@@ -1,0 +1,9 @@
+request:
+    method: GET
+    url: .*test6.*
+
+    headers: "Auth.*testx"
+
+response:
+    status: 200
+    body: "Based on string"

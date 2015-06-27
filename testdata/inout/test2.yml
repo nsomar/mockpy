@@ -1,0 +1,9 @@
+name: Some great name
+
+request:
+    method: GET
+    url: .*test/.*2.*
+
+response:
+    status: 304
+    body_file: test2.json

@@ -1,0 +1,13 @@
+request:
+    method: GET
+    url: .*test5.*
+
+    headers:
+      Auth.*: B.*123
+
+response:
+    status: 200
+    body: {"key": "or even json!"}
+
+    headers:
+      Content-type: application/json

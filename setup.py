@@ -15,11 +15,13 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read().replace('.. :changelog:', '')
 
 requirements = [
-    # TODO: put package requirements here
+    "mock",
+    "cherrypy",
+    "netlib"
 ]
 
 test_requirements = [
-    # TODO: put package test requirements here
+    "mock"
 ]
 
 setup(
@@ -32,9 +34,10 @@ setup(
     url='https://github.com/oarrabi/mockpy',
     packages=[
         'mockpy',
+        "mockpy.core",
+        "mockpy.models",
+        "mockpy.utils",
     ],
-    package_dir={'mockpy':
-                 'mockpy'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
@@ -53,5 +56,10 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    entry_points={
+        'console_scripts': [
+            'sample_cli=mockpy.mockpy:start',
+        ],
+    },
 )

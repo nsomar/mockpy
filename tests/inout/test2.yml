@@ -1,0 +1,9 @@
+name: Some great name
+
+request:
+    method: GET
+    url: .*IPrintBoardingPass.*
+
+response:
+    status: 200
+    body_file: test2.json

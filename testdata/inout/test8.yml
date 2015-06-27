@@ -1,0 +1,7 @@
+request:
+    method: PUT
+    url: .*test8.*
+
+response:
+    status: 200
+    body: "Method is put"

@@ -1,0 +1,10 @@
+request:
+    method: GET
+    url: .*1/2.*
+
+response:
+    status: 200
+    body_file: test1.json
+
+    headers:
+      Content-type: application/json; charset=utf-8

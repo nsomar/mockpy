@@ -1,0 +1,7 @@
+request:
+    method: Get
+    url: .*test9.*
+
+response:
+    status: 200
+    body_image: cat.png
