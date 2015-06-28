@@ -19,7 +19,7 @@ def log_multiple_matches(items):
 
 
 def log_url(url):
-    info("\nRequest with url '%s'" % url)
+    info("Request with url '%s'" % url)
 
 
 def log_request(request):

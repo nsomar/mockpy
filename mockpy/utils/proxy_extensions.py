@@ -17,6 +17,8 @@ def to_mapper_request(self):
     flow_request = MappingRequest(params)
     return flow_request
 
+HTTPRequest.to_mapper_request = to_mapper_request
+
 
 def from_httplib_headers(cls, headers):
     odict = cls()
@@ -30,6 +32,9 @@ def from_httplib_headers(cls, headers):
             odict[header[0]] = [header[1]]
 
     return odict
+
+ODictCaseless.from_httplib_headers = classmethod(from_httplib_headers)
+
 
 def from_intercepted_response(cls, response):
     headers = ODictCaseless.from_httplib_headers(response.headers)
@@ -48,8 +53,7 @@ def with_html(cls, html):
                    httpversion=(1, 1))
     return response
 
-HTTPRequest.to_mapper_request = to_mapper_request
 
-ODictCaseless.from_httplib_headers = classmethod(from_httplib_headers)
 HTTPResponse.from_intercepted_response = classmethod(from_intercepted_response)
 HTTPResponse.with_html = classmethod(with_html)
+

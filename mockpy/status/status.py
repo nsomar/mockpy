@@ -14,6 +14,7 @@ class Status(object):
         string += "Parsed interceptors:<br/>"
         string += "_" * 80
         string += "<br/>"
+
         for item in self.mapping_handler.mappings:
             string += " - " + item.file_name + "<br/>"
 
@@ -26,7 +27,6 @@ class Status(object):
             string += "Response:<br/>" + response + "<br/>"
             string += "_" * 80
             string += "<br/>"
-
 
         string += "</body>"
         string += "</html>"

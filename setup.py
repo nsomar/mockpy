@@ -18,7 +18,8 @@ requirements = [
     "mock",
     "cherrypy",
     "netlib",
-    "termcolor"
+    "termcolor",
+    "watchdog"
 ]
 
 test_requirements = [

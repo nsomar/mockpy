@@ -86,13 +86,5 @@ class CherryPyMapperTests(unittest.TestCase):
 
         assert mock_cherry.response.headers == {"header_key": "header_value"}
 
-    def test_return_correct_dict_for_cherry(self):
-        mock_cherry = Mock()
-        mock_cherry.response = Mock(status=1)
-        mock_cherry.url = Mock(return_value="ss")
-
-        cherry_mapper = CherryPyMapper(cherrypy=mock_cherry)
-        assert cherry_mapper.cherry_request_dict()["url"] == "ss"
-
 if __name__ == '__main__':
     unittest.main()

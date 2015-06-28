@@ -4,6 +4,7 @@ from mockpy.models.mapping_request import *
 from mockpy.utils import log
 from mockpy.utils.config import *
 from mockpy.status.status import Status
+import mockpy.utils.cherrypy_extensions
 
 
 class CherryPyMapper(object):
@@ -15,14 +16,15 @@ class CherryPyMapper(object):
 
     def handle_request(self):
 
-        if Status.is_status(self.cherrypy.url()):
+        log.log_url(self.cherrypy.url())
+
+        if self.status.is_status(self.cherrypy.url()):
             info("Accessing Satus")
-            self.print_seperator()
+            log.print_seperator()
             return self.status.html_response()
 
-        request = MappingRequest(self.cherry_request_dict())
+        request = self.cherrypy.to_mapper_request()
         items = self.mapping_handler.mapping_item_for_mapping_request(request)
-        log.log_url(self.cherrypy.url())
 
         if len(items) == 0:
             self.cherrypy.response.status = 500
@@ -42,16 +44,6 @@ class CherryPyMapper(object):
         log.print_seperator()
 
         return response.body_response()
-
-    def cherry_request_dict(self):
-        dic = {"method": self.cherrypy.request.method,
-               "url": self.cherrypy.url(),
-               "headers": self.cherrypy.request.headers}
-
-        if self.cherrypy.request.process_request_body:
-            dic["body"] = self.cherrypy.request.body.read()
-
-        return dic
 
     def fill_headers(self, headers):
         if type({}) is not type(headers):
