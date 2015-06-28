@@ -39,7 +39,7 @@ class CherryPyMapper(object):
 
     def check_status(func):
         def parse_status(*args, **kwargs):
-            print args
+            print(args)
             return ""
 
         return parse_status
