@@ -1,4 +1,3 @@
-import yaml
 from .mapping_request import MappingRequest
 from .mapping_respone import MappingResponse
 from os.path import basename

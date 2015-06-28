@@ -1,5 +1,3 @@
-import types
-import json
 from mockpy.models.mapping_request import *
 from mockpy.utils import log
 from mockpy.utils.config import *
@@ -45,7 +43,6 @@ class CherryPyMapper(object):
             print args
             return ""
         return parse_status
-
 
     def fill_headers(self, headers):
         if type({}) is not type(headers):

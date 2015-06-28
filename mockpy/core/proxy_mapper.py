@@ -4,14 +4,14 @@
 import httplib
 from threading import Thread
 
-from libmproxy.protocol.http import HTTPRequest, HTTPResponse
+from libmproxy.protocol.http import HTTPResponse
 from netlib.odict import ODictCaseless
 
-import mockpy.utils.proxy_extensions
 from ..utils.config import *
 from mockpy.status.status import check_status_proxy
 from ..utils import log
 from ..models.mapping_items_manager import *
+import mockpy.utils.proxy_extensions
 
 
 class ProxyMapper(object):
@@ -53,7 +53,7 @@ class ProxyMapper(object):
             flow.reply()
         else:
             thread = Thread(target=self.threaded_perform_http_request,
-                args=(flow, self.http_proxy))
+                            args=(flow, self.http_proxy))
             thread.start()
 
     def threaded_perform_http_request(self, flow, proxy_settings):

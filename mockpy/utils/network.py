@@ -1,7 +1,11 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-import subprocess, os, re, atexit, pprint
+import subprocess
+import os
+import re
+import atexit
 from .config import *
+
 
 class NetworkConfig(object):
 
@@ -64,6 +68,8 @@ class NetworkConfig(object):
 """
     Getting the network settings
 """
+
+
 def get_proxy_settings():
         networks = get_networks()
         dict = {}
@@ -114,6 +120,8 @@ def get_web_proxy(network_name, secure=False):
 """
     Changing proxy settings
 """
+
+
 def apply_proxy_settings(settings):
     try:
         for network_name in settings.keys():
@@ -147,6 +155,8 @@ def turn_off_proxy_for_network(network_name, secure=False):
 """
     Restore old settings on exit
 """
+
+
 def restore_on_exit(proxy_settings):
     def exit_handler():
         print("Restoring network proxy")

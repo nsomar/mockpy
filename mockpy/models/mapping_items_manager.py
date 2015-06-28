@@ -1,11 +1,10 @@
-__author__ = 'omarsubhiabdelhafith'
-
+import yaml
 from .mapping_item import *
 from mockpy.utils import log
-from functools import partial
 import re
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+
 
 class MappingItemsManager(object):
 
@@ -49,8 +48,8 @@ class MapperDirectoryListener(FileSystemEventHandler):
 
     def on_any_event(self, event):
         log.info("Inout or Res directory changed, rebuilding mapping settings\n"
-            "File path: %s" % event.src_path +
-            "\nEvent type: %s" % event.event_type)
+                 "File path: %s" % event.src_path +
+                 "\nEvent type: %s" % event.event_type)
 
         self.mapping_manager.parse_inout_and_res()
         log.success("Mapping settings rebuilt successfully")
@@ -60,6 +59,3 @@ class MapperDirectoryListener(FileSystemEventHandler):
 def get_yaml_files(path):
     files = os.listdir(path)
     return filter(lambda file: re.match(".*\.yml$", file), files)
-
-
-

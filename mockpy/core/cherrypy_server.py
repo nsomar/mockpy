@@ -3,8 +3,9 @@
 import cherrypy
 from ..models.mapping_items_manager import *
 from .cherrypy_mapper import *
-import sys, signal
+import signal
 from ..utils.config import *
+
 
 class CherryPyServer(object):
     exposed = True
@@ -12,7 +13,7 @@ class CherryPyServer(object):
     def __init__(self, inout_path, res_path):
         self.handler = MappingItemsManager(inout_path, res_path)
         success("Server started successfully at %s:%s" %
-            ("http://127.0.0.1", cherrypy.config["server.socket_port"]))
+                ("http://127.0.0.1", cherrypy.config["server.socket_port"]))
 
     @cherrypy.expose
     def default(self, *args, **kwargs):

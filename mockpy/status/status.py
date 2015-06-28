@@ -1,7 +1,7 @@
 import re
 from mockpy.utils.log import *
 from mockpy.utils import log
-from libmproxy.protocol.http import HTTPRequest, HTTPResponse
+from libmproxy.protocol.http import HTTPResponse
 
 
 class Status(object):
@@ -39,6 +39,7 @@ class Status(object):
     def is_status(url):
         return re.match("^.*(127\.0\.0\.1|localhost|mockpy)(:\d*)?/status$", url) is not None
 
+
 def check_status_cherry_py(func):
 
     def parse_status(*args, **kwargs):
@@ -55,6 +56,7 @@ def check_status_cherry_py(func):
         return func(self)
 
     return parse_status
+
 
 def check_status_proxy(func):
 

@@ -1,6 +1,4 @@
 import json
-from cherrypy.lib.static import serve_file
-import os
 
 
 class MappingResponse(object):

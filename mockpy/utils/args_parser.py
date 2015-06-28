@@ -4,6 +4,7 @@ from . import config
 from config import *
 import os
 
+
 def parse():
     global parser, args
     parser = argparse.ArgumentParser(

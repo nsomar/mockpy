@@ -1,15 +1,12 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-import httplib
-from threading import Thread
 import signal
 import sys
 
 from libmproxy import controller, proxy
 from libmproxy.proxy.server import ProxyServer
 
-from ..utils import log
 from .proxy_mapper import *
 
 

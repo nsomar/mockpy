@@ -6,6 +6,8 @@ from ..models.mapping_items_manager import *
 """
     Extensions
 """
+
+
 def to_mapper_request(self):
     headers = dict(self.headers.items())
 
@@ -45,6 +47,7 @@ def from_intercepted_response(cls, response):
                    headers=headers)
     return response
 
+
 def with_html(cls, html):
     response = cls(code=200,
                    content=html,
@@ -56,4 +59,3 @@ def with_html(cls, html):
 
 HTTPResponse.from_intercepted_response = classmethod(from_intercepted_response)
 HTTPResponse.with_html = classmethod(with_html)
-

@@ -1,5 +1,3 @@
-__author__ = 'omarsubhiabdelhafith'
-
 import re
 from mockpy.utils import config
 
@@ -21,9 +19,9 @@ class MappingRequest(object):
         if config.verbose:
             print("this_url %s, other_url %s" % (self.url, other.url))
             print("matches_method %d, matches_url %d, matches_body %d, matches_headers %d" %
-                  ( matches_method, matches_url, matches_body, matches_headers))
+                  (matches_method, matches_url, matches_body, matches_headers))
 
-        return  matches_method and matches_url and matches_body and matches_headers
+        return matches_method and matches_url and matches_body and matches_headers
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -95,7 +93,7 @@ class HeaderMatcher(object):
         other_value = other_header[other_key]
         return re.match(this_value, other_value)
 
-    def string_header_matches(self, other_headers, this_header= ""):
+    def string_header_matches(self, other_headers, this_header=""):
         this_header = this_header if this_header else self.headers
         other_header_strings = [k + v for (k, v) in other_headers.items()]
         return any(re.match(this_header, value) for value in other_header_strings)

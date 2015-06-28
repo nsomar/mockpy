@@ -5,7 +5,6 @@ from .utils.network import NetworkConfig
 from .core.cherrypy_server import start_mock_server
 from .core.proxy_server import start_proxy_server
 from .utils.config import *
-import os
 
 
 def start():
@@ -13,8 +12,8 @@ def start():
 
     def print_environment():
         info("Running with configuration:\n"
-              "Input:'%s'\n" % args.inout +
-              "Resources: '%s'\n" % args.res)
+             "Input:'%s'\n" % args.inout +
+             "Resources: '%s'\n" % args.res)
 
     if args.proxy:
         info("Enabling network proxy on {0}:{1}".format("127.0.0.1", args.port))

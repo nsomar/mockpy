@@ -7,8 +7,7 @@ def print_seperator():
 
 
 def log_multiple_matches(items):
-    string = "Matched %d items, choosing the first one" %\
-    (len(items))
+    string = "Matched %d items, choosing the first one" % (len(items))
 
     for item in items:
         string += "\n- " + item.file_name
