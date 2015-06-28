@@ -1,7 +1,6 @@
 pytest
 mitmproxy
 cherrypy
-netlib
 termcolor
 watchdog
 wheel==0.23.0

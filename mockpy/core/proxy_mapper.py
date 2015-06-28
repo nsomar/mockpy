@@ -5,7 +5,7 @@ import httplib
 from threading import Thread
 
 from libmproxy.protocol.http import HTTPResponse
-from netlib.odict import ODictCaseless
+from httplib.odict import ODictCaseless
 
 from ..utils.config import *
 from mockpy.status.status import check_status_proxy
