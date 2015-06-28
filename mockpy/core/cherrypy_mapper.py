@@ -1,7 +1,9 @@
 import types
 import json
 from mockpy.models.mapping_request import *
-from mockpy.utils import config
+from mockpy.utils import log
+from mockpy.utils.config import *
+from mockpy.status.status import Status
 
 
 class CherryPyMapper(object):
@@ -9,34 +11,35 @@ class CherryPyMapper(object):
     def __init__(self, mapping_handler=None, cherrypy=None):
         self.mapping_handler = mapping_handler
         self.cherrypy = cherrypy
+        self.status = Status(self.mapping_handler)
 
     def handle_request(self):
 
-        if self.is_status(self.cherrypy.url()):
-            return self.status_response()
+        if Status.is_status(self.cherrypy.url()):
+            info("Accessing Satus")
+            self.print_seperator()
+            return self.status.html_response()
 
         request = MappingRequest(self.cherry_request_dict())
-        responses = self.mapping_handler.response_for_mapping_request(request)
+        items = self.mapping_handler.mapping_item_for_mapping_request(request)
+        log.log_url(self.cherrypy.url())
 
-        if config.verbose:
-            print("===============")
-            print(json.dumps(request.__dict__))
-            print(json.dumps(request.__dict__))
-            print("===============")
-
-        if len(responses) == 0:
+        if len(items) == 0:
             self.cherrypy.response.status = 500
             return "no response found for request"
 
-        if len(responses) > 1:
-            self.cherrypy.response.status = 500
-            return "matched multiple responses"
+        if len(items) > 1:
+            log.log_multiple_matches(items)
 
-        response = responses[0]
-
+        matched_item = items[0]
+        response = matched_item.response
 
         self.cherrypy.response.status = response.status
         self.fill_headers(response.headers)
+
+        log.log_request(matched_item.request)
+        log.log_response(response)
+        log.print_seperator()
 
         return response.body_response()
 
@@ -49,18 +52,6 @@ class CherryPyMapper(object):
             dic["body"] = self.cherrypy.request.body.read()
 
         return dic
-
-    def status_response(self):
-        string = "Server running correctly<br/><br/>"
-        string += "Parsed res:<br/>"
-        for file in self.mapping_handler.yaml_files:
-            string += " - " + file + "<br/>"
-
-        return string
-
-    @staticmethod
-    def is_status(url):
-        return re.match(".*/status$", url) is not None
 
     def fill_headers(self, headers):
         if type({}) is not type(headers):

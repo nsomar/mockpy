@@ -28,6 +28,6 @@ def start():
         info("Starting proxy server")
         start_proxy_server(args.port, args.inout, args.res, network.previous_http_proxy)
     else:
-        info("Starting mock server on port {0}".format(args.port))
+        info("Starting mock server")
         print_environment()
         start_mock_server(args.port, args.inout, args.res)

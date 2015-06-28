@@ -11,6 +11,7 @@ class MappingItem(object):
         self.request = MappingRequest(dic["request"])
         self.response = MappingResponse(dic["response"], res_path)
 
+        self.file_name = file_name
         self.display_name = self.get_display_name(dic, file_name)
 
     def get_display_name(self, dic, file_name):

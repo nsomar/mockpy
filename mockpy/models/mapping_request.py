@@ -39,13 +39,13 @@ class MappingRequest(object):
         return re.match(self.body, body) if has_body else True
 
     def __str__(self):
-        str = "URL %s" % self.url
+        str = "URL: %s" % self.url
         if self.method != "":
-            str += "\nMethod %s " % self.method
+            str += "\nMethod: %s " % self.method
         if self.method != {}:
-            str += "\nHeader %s " % self.headers
+            str += "\nHeader: %s " % self.headers
         if self.body != "":
-            str += "\nBody %s " % self.body
+            str += "\nBody: %s " % self.body
 
         return str
 

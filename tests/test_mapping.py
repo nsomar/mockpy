@@ -69,14 +69,11 @@ class MapperResponseTests(unittest.TestCase):
 
 class CherryPyMapperTests(unittest.TestCase):
 
-    def test_is_status_url(self):
-        cherry_mapper = CherryPyMapper("", "")
-        assert cherry_mapper.is_status("http://127.0.0.1:8080/status") is True
-
     def test_can_set_headers(self):
         mock_mapper = Mock()
-        mock_response = Mock(status=1, headers={"header_key": "header_value"})
-        mock_mapper.response_for_mapping_request = Mock(return_value=[mock_response])
+        item1 = Mock()
+        item1.response = Mock(status=1, headers={"header_key": "header_value"})
+        mock_mapper.mapping_item_for_mapping_request = Mock(return_value=[item1])
 
         mock_cherry = Mock()
         mock_cherry.response = Mock(status=1, headers={})

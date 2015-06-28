@@ -1,9 +1,0 @@
-name: Some great name
-
-request:
-    method: GET
-    url: .*singapore-server/contactus.*
-
-response:
-    status: 304
-    body_file: test2.json

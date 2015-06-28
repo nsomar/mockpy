@@ -11,29 +11,51 @@ from libmproxy.proxy.server import ProxyServer
 from libmproxy.protocol.http import HTTPRequest, HTTPResponse
 from netlib.odict import ODictCaseless
 
+import mockpy.utils.extensions
 from ..utils.config import *
+from mockpy.status.status import Status
+from ..utils import log
 from ..models.mapping_items_manager import *
 
 
 class MITMProxy(controller.Master):
+
     def __init__(self, server, inout_path, res_path, http_proxy):
         controller.Master.__init__(self, server)
+
         self.http_proxy = http_proxy
         self.handler = MappingItemsManager(inout_path, res_path)
+        self.status = Status(self.handler)
+
         success("Proxy server started")
 
     def handle_request(self, flow):
         request = flow.request.to_mapper_request()
         mapping_items = self.handler.mapping_item_for_mapping_request(request)
 
-        if len(mapping_items) == 1:
-            self.perform_mapping_request(flow, mapping_items[0])
-        else:
+        log.log_url(flow.request.url)
+
+        if Status.is_status(flow.request.url):
+            info("Accessing Satus")
+            flow.reply(HTTPResponse.with_html(self.status.html_response()))
+            log.print_seperator()
+            return
+
+        if len(mapping_items) > 1:
+            log.log_multiple_matches(mapping_items)
+
+        if len(mapping_items) == 0:
             self.perform_http_request(flow)
+        else:
+            self.perform_mapping_request(flow, mapping_items[0])
+
+        log.print_seperator()
 
     def perform_mapping_request(self, flow, mapping_item):
         response, request = mapping_item.response, mapping_item.request
-        self.log_intercepted_request(flow, request)
+
+        log.log_request(request)
+        log.log_response(response)
 
         response = HTTPResponse.from_intercepted_response(response)
         flow.reply(response)
@@ -42,7 +64,8 @@ class MITMProxy(controller.Master):
         if self.http_proxy is None:
             flow.reply()
         else:
-            thread = Thread(target=self.threaded_perform_http_request, args=(flow, self.http_proxy))
+            thread = Thread(target=self.threaded_perform_http_request,
+                args=(flow, self.http_proxy))
             thread.start()
 
     def threaded_perform_http_request(self, flow, proxy_settings):
@@ -73,14 +96,6 @@ class MITMProxy(controller.Master):
                   (request.method, request.url))
             return None
 
-    """
-        Logging
-    """
-    @staticmethod
-    def log_intercepted_request(flow, request):
-        info("\nIntercepting request for URL %s"
-              "\nMatching:\n%s" % (flow.request.url, str(request)))
-
 
 def start_proxy_server(port, inout_path, res_path, http_proxy):
     config = proxy.ProxyConfig(port=port)
@@ -95,42 +110,3 @@ def start_proxy_server(port, inout_path, res_path, http_proxy):
 
     signal.signal(signal.SIGINT, signal_handler)
     m.run()
-
-
-def to_mapper_request(self):
-    headers = dict(self.headers.items())
-
-    params = {"url": self.url,
-              "method": self.method,
-              "headers": headers,
-              "body": self.content}
-
-    flow_request = MappingRequest(params)
-    return flow_request
-
-
-def from_httplib_headers(cls, headers):
-    odict = cls()
-
-    if type({}) is type(headers):
-        for key in headers.keys():
-            odict[key] = [headers[key]]
-
-    if type([]) is type(headers):
-        for header in headers:
-            odict[header[0]] = [header[1]]
-
-    return odict
-
-def from_intercepted_response(cls, response):
-    headers = ODictCaseless.from_httplib_headers(response.headers)
-    response = cls(code=response.status,
-                   content=response.body_response(),
-                   msg="",
-                   httpversion=(1, 1),
-                   headers=headers)
-    return response
-
-HTTPRequest.to_mapper_request = to_mapper_request
-ODictCaseless.from_httplib_headers = classmethod(from_httplib_headers)
-HTTPResponse.from_intercepted_response = classmethod(from_intercepted_response)
