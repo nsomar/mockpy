@@ -17,9 +17,9 @@ with open('HISTORY.rst') as history_file:
 requirements = [
     "mock",
     "cherrypy",
-    "netlib",
     "termcolor",
-    "watchdog"
+    "watchdog",
+    "mitmproxy"
 ]
 
 test_requirements = [
@@ -29,8 +29,8 @@ test_requirements = [
 
 setup(
     name='mockpy',
-    version='0.1.1',
-    description="Mockpy is an work in progress (Wip) open source tool to quickly create mock servers. Mockpy is inspired from wiremock and uses libmproxy for the proxy functionality",
+    version='0.1.4',
+    description="Mockpy is an work in progress open source tool to quickly create mock servers. Mockpy is inspired from wiremock and uses libmproxy for the proxy functionality",
     long_description=readme + '\n\n' + history,
     author="Omar Abdelhafith",
     author_email='o.arrabi@me.com',
@@ -55,6 +55,7 @@ setup(
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 2.7.9',
     ],
     test_suite='tests',
     tests_require=test_requirements,
