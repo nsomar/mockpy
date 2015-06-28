@@ -1,4 +1,6 @@
 pytest
+mitmproxy
+cherrypy
 netlib
 termcolor
 watchdog
