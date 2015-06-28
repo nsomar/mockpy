@@ -23,7 +23,8 @@ requirements = [
 ]
 
 test_requirements = [
-    "mock"
+    "mock",
+    "termcolor"
 ]
 
 setup(

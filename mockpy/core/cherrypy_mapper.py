@@ -6,7 +6,6 @@ import mockpy.utils.cherrypy_extensions
 
 
 class CherryPyMapper(object):
-
     def __init__(self, mapping_handler=None, cherrypy=None):
         self.mapping_handler = mapping_handler
         self.cherrypy = cherrypy
@@ -42,6 +41,7 @@ class CherryPyMapper(object):
         def parse_status(*args, **kwargs):
             print args
             return ""
+
         return parse_status
 
     def fill_headers(self, headers):
