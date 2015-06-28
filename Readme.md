@@ -1,4 +1,6 @@
 ## Mockpy
+[![Build Status](https://travis-ci.org/oarrabi/mockpy.svg?branch=master)](https://travis-ci.org/oarrabi/mockpy)
+
 [Mockpy](%5Bhttps://github.com/oarrabi/mockpy%5D) is a work in progress (Wip) python open source tool to quickly create mock servers on Mac OS X. Mockpy is inspired from wiremock and uses libmproxy for the proxy functionality.
 
 `Mockpy` was originally created as an example of writing a python application under TDD methodology. As for the current code base, mockpy has 88% line coverage and 58% file coverage.
