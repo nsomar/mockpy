@@ -1,4 +1,7 @@
 import re
+from mockpy.utils.log import *
+from mockpy.utils import log
+from libmproxy.protocol.http import HTTPRequest, HTTPResponse
 
 
 class Status(object):
@@ -34,4 +37,41 @@ class Status(object):
 
     @staticmethod
     def is_status(url):
-        return re.match("^.*(127\.0\.0\.1|localhost)(:\d*)?/status$", url) is not None
+        return re.match("^.*(127\.0\.0\.1|localhost|mockpy)(:\d*)?/status$", url) is not None
+
+def check_status_cherry_py(func):
+
+    def parse_status(*args, **kwargs):
+        self = args[0]
+
+        if not hasattr(self, "status"):
+            self.status = Status(self.mapping_handler)
+
+        if self.status.is_status(self.cherrypy.url()):
+            info("Accessing Satus")
+            log.print_seperator()
+            return self.status.html_response()
+
+        return func(self)
+
+    return parse_status
+
+def check_status_proxy(func):
+
+    def parse_status(*args, **kwargs):
+        self = args[0]
+
+        if not hasattr(self, "status"):
+            self.status = Status(self.mapping_handler)
+
+        flow = args[1]
+
+        if self.status.is_status(flow.request.url):
+            info("Accessing Satus")
+            flow.reply(HTTPResponse.with_html(self.status.html_response()))
+            log.print_seperator()
+            return self.status.html_response()
+
+        return func(self, flow)
+
+    return parse_status

@@ -9,27 +9,22 @@ from netlib.odict import ODictCaseless
 
 import mockpy.utils.proxy_extensions
 from ..utils.config import *
-from mockpy.status.status import Status
+from mockpy.status.status import check_status_proxy
 from ..utils import log
 from ..models.mapping_items_manager import *
+
 
 class ProxyMapper(object):
 
     def __init__(self, mapping_handler, http_proxy):
         self.http_proxy = http_proxy
         self.mapping_handler = mapping_handler
-        self.status = Status(self.mapping_handler)
 
         success("Proxy server started")
 
+    @check_status_proxy
     def handle_request(self, flow):
         log.log_url(flow.request.url)
-
-        if self.status.is_status(flow.request.url):
-            info("Accessing Satus")
-            flow.reply(HTTPResponse.with_html(self.status.html_response()))
-            log.print_seperator()
-            return
 
         request = flow.request.to_mapper_request()
         mapping_items = self.mapping_handler.mapping_item_for_mapping_request(request)

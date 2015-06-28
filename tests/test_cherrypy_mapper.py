@@ -8,14 +8,7 @@ from mock import Mock
 import os
 
 
-class StatusTests(unittest.TestCase):
-
-    def test_gets_status_correctly(self):
-        self.assertEqual(Status.is_status("http://127.0.0.1/status"), True)
-        self.assertEqual(Status.is_status("http://localhost/status"), True)
-        self.assertEqual(Status.is_status("http://localhost123/status"), False)
-        self.assertEqual(Status.is_status("http://1.1.1.1/status/123"), False)
-        self.assertEqual(Status.is_status("http://1.1.1.1/sanotus"), False)
+class CherryPyMapperTests(unittest.TestCase):
 
     def test_return_correct_body_for_multiple_response(self):
         item1 = Mock(file_name="file1")

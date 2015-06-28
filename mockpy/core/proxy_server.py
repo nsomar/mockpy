@@ -12,6 +12,7 @@ from libmproxy.proxy.server import ProxyServer
 from ..utils import log
 from .proxy_mapper import *
 
+
 class MITMProxy(controller.Master):
 
     def __init__(self, server, proxy_mapper):
