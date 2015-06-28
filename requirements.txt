@@ -1,4 +1,4 @@
-py.test
+pytest
 netlib
 termcolor
 watchdog
