@@ -3,6 +3,7 @@
 import subprocess
 import os
 import re
+import sys
 import atexit
 from .config import *
 
@@ -129,7 +130,7 @@ def apply_proxy_settings(settings):
             set_proxy(network_name, settings[network_name], secure=True)
     except KeyboardInterrupt:
         error("Exiting...")
-        exit(0)
+        sys.exit(0)
 
 
 def set_proxy(network_name, values, secure=False):

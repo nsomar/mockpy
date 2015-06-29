@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-from .utils import args_parser
-from .utils.network import NetworkConfig
-from .core.cherrypy_server import start_mock_server
-from .core.proxy_server import start_proxy_server
-from .utils.config import *
+from utils import args_parser
+from utils.network import NetworkConfig
+from core.cherrypy_server import start_mock_server
+from core.proxy_server import start_proxy_server
+from utils.config import *
 
 
 def start():
     args = args_parser.parse()
-
+    print ("hello")
     def print_environment():
         info("Running with configuration:\n"
              "Input:'%s'\n" % args.inout +

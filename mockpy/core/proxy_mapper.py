@@ -5,13 +5,13 @@ import httplib
 from threading import Thread
 
 from libmproxy.protocol.http import HTTPResponse
-from httplib.odict import ODictCaseless
 
 from ..utils.config import *
 from mockpy.status.status import check_status_proxy
 from ..utils import log
 from ..models.mapping_items_manager import *
 import mockpy.utils.proxy_extensions
+from netlib.odict import ODictCaseless
 
 
 class ProxyMapper(object):

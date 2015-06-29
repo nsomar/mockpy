@@ -1,12 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
+from setuptools import setup
 
 with open('Readme.md') as readme_file:
     readme = readme_file.read()
@@ -19,6 +14,7 @@ requirements = [
     "cherrypy",
     "termcolor",
     "watchdog",
+    "netlib",
     "mitmproxy"
 ]
 
@@ -28,6 +24,7 @@ test_requirements = [
 ]
 
 setup(
+    app=['mockpy.py'],
     name='mockpy',
     version='0.1.4',
     description="Mockpy is an work in progress open source tool to quickly create mock servers. Mockpy is inspired from wiremock and uses libmproxy for the proxy functionality",
@@ -55,7 +52,6 @@ setup(
         "Programming Language :: Python :: 2",
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 2.7.9',
     ],
     test_suite='tests',
     tests_require=test_requirements,

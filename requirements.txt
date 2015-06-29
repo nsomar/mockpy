@@ -4,3 +4,4 @@ cherrypy
 termcolor
 watchdog
 wheel==0.23.0
+-e git+https://github.com/pyinstaller/pyinstaller.git@develop#egg=Package

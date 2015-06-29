@@ -1,4 +1,4 @@
-from httplib.odict import ODictCaseless
+from netlib.odict import ODictCaseless
 from libmproxy.protocol.http import HTTPRequest, HTTPResponse
 from ..models.mapping_items_manager import *
 

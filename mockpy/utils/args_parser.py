@@ -3,6 +3,7 @@ import argparse
 from . import config
 from config import *
 import os
+import sys
 
 
 def parse():
@@ -38,9 +39,9 @@ def validate_input(parsed_args):
     if not os.path.exists(parsed_args.inout):
         error("The input/output YAML folder cannot be found at '%s'\n" % parsed_args.inout +
               "Make sure the folder exists or use -i [INOUT] to specify a new path")
-        exit(0)
+        sys.exit(0)
 
     if not os.path.exists(parsed_args.res):
         error("The resources folder cannot be found at '%s'\n" % parsed_args.res +
               "Make sure the folder exists or use -r [RES] to specify a new path")
-        exit(0)
+        sys.exit(0)

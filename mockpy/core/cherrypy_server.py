@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import cherrypy
-from ..models.mapping_items_manager import *
-from .cherrypy_mapper import *
+from mockpy.models.mapping_items_manager import *
+from cherrypy_mapper import *
 import signal
-from ..utils.config import *
+from mockpy.utils.config import *
 
 
 class CherryPyServer(object):
