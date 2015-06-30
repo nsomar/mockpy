@@ -1,0 +1,2 @@
+include mockpy/data/*
+recursive-include data *

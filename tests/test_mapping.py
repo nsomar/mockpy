@@ -1,5 +1,3 @@
-__author__ = 'omarsubhiabdelhafith'
-
 import unittest
 from mockpy.models.mapping_items_manager import *
 from mock import Mock

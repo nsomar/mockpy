@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup
+from mockpy import version
 
 with open('Readme.md') as readme_file:
     readme = readme_file.read()
@@ -26,8 +27,8 @@ test_requirements = [
 setup(
     app=['mockpy.py'],
     name='mockpy',
-    version='0.1.4',
-    description="Mockpy is an work in progress open source tool to quickly create mock servers. Mockpy is inspired from wiremock and uses libmproxy for the proxy functionality",
+    version=version.VERSION,
+    description="Mockpy is a python open source line utility to quickly create mock servers on Mac OS X.",
     long_description=readme + '\n\n' + history,
     author="Omar Abdelhafith",
     author_email='o.arrabi@me.com',

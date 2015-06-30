@@ -1,0 +1,5 @@
+request:
+    url: .*mockpy_hello_world$
+
+response:
+    body: "Hello world!"
