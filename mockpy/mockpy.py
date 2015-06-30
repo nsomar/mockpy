@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from utils import args_parser
-from utils.network import NetworkConfig
+from utils.network import NetworkConfig, turn_off_all_proxies
 from core.cherrypy_server import start_mock_server
 from core.proxy_server import start_proxy_server
 from utils.dir_init import *
@@ -9,6 +9,7 @@ from utils.config import *
 import sys
 import version
 import os
+
 
 def start():
     args = args_parser.parse()
@@ -18,6 +19,9 @@ def start():
 
     if args.init:
         perform_init()
+
+    if args.cleanup:
+        perform_cleanup()
 
     if args.proxy:
         info("Enabling network proxy on {0}:{1}".format("127.0.0.1", args.port))
@@ -49,6 +53,14 @@ def perform_init():
     dir_init.initialize()
     success("\nCurrent directory have been initialized successfully")
     info("\nTODO:\n1.Run 'mockpy'\n2.Visit http://localhost:9090/mockpy_hello_world to confirm mockpy is working")
+    sys.exit(0)
+
+
+def perform_cleanup():
+    info("Turning off HTTP/HTTPS proxy for all networks...")
+    warn("Note: sudo password may be asked to enable network http/https proxies\n")
+    turn_off_all_proxies()
+    success("\nHTTP/HTTPS proxy settings turned off successfully")
     sys.exit(0)
 
 

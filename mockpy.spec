@@ -10,6 +10,9 @@ a = Analysis(['mockpy.py'],
              runtime_hooks=None,
              excludes=None,
              cipher=block_cipher)
+
+a.datas += [("sample.yml", "mockpy/data/sample.yml", "DATA" )]
+
 pyz = PYZ(a.pure,
              cipher=block_cipher)
 exe = EXE(pyz,

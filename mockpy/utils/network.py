@@ -72,14 +72,14 @@ class NetworkConfig(object):
 
 
 def get_proxy_settings():
-        networks = get_networks()
-        dict = {}
-        for network in networks:
-            http = get_web_proxy(network)
-            https = get_web_proxy(network, secure=True)
-            dict[network] = {"http": http, "https": https}
+    networks = get_networks()
+    dict = {}
+    for network in networks:
+        http = get_web_proxy(network)
+        https = get_web_proxy(network, secure=True)
+        dict[network] = {"http": http, "https": https}
 
-        return dict
+    return dict
 
 
 def get_networks():
@@ -152,6 +152,13 @@ def turn_off_proxy_for_network(network_name, secure=False):
     cmd = "sudo networksetup {0} '{1}' off".format(proxy, network_name)
     subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).wait()
 
+
+def turn_off_all_proxies():
+    networks = get_networks()
+    for network in networks:
+        info("Turning off proxy settings for %s" % network)
+        turn_off_proxy_for_network(network, False)
+        turn_off_proxy_for_network(network, True)
 
 """
     Restore old settings on exit

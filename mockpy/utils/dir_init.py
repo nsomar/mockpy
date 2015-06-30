@@ -2,6 +2,8 @@ import os
 import shutil
 import shutil
 from config import *
+import sys
+
 
 class DirInit(object):
 
@@ -25,9 +27,7 @@ class DirInit(object):
             info("Created directory at %s" % dir)
 
     def copy_sample_yaml(self):
-        path = os.path.join(os.path.dirname(__file__), "../data/sample.yml")
-        path = os.path.normpath(path)
-
+        path = self.path_to_sample()
         dest_path = self.inout_path + "/sample.yml"
 
         if os.path.exists(dest_path):
@@ -35,6 +35,12 @@ class DirInit(object):
         else:
             shutil.copyfile(path, dest_path)
             info("Created sample yaml at %s" % dest_path)
+
+    def path_to_sample(self):
+        path = os.path.join(os.path.dirname(__file__), "../data")
+
+        absolute_path = getattr(sys, "_MEIPASS", path) + "/sample.yml"
+        return absolute_path
 
     def clear(self):
         shutil.rmtree(self.path)

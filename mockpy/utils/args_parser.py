@@ -10,40 +10,74 @@ def parse():
     parser = argparse.ArgumentParser(
         description='Start a mock server that reads input yaml res from inout directory.')
 
-    add_top_level_parser(parser)
-    add_init_parser(parser)
+    sub_parsers = parser.add_subparsers(title="Commands", dest="sub")
+
+    parser.add_argument('--version', help="Display version")
+
+    add_start_parser(sub_parsers)
+    add_init_parser(sub_parsers)
+    add_cleanup_parser(sub_parsers)
+
+    if has_pre_parse():
+        return pre_parse()
 
     parsed_args = parser.parse_args()
 
-    config.verbose = parsed_args.verbose is not None
+    parsed_args.init = parsed_args.sub == "init"
+    parsed_args.cleanup = parsed_args.sub == "cleanup"
 
-    is_version = parsed_args.version == 1
-    is_init = parsed_args.init is not None
-
-    if is_version is False and is_init is False:
+    if (parsed_args.init or parsed_args.cleanup) is False:
         validate_input(parsed_args)
 
     return parsed_args
 
 
-def add_top_level_parser(parser):
-    parser.add_argument('--port',
-                        default=9090, type=int,
-                        help='Selects the desired port.')
-
-    parser.add_argument('--verbose', '-v', action='count')
-    parser.add_argument('--proxy', '-x', action='count')
-
-    parser.add_argument('--version', action="count")
-
-    parser.add_argument('--inout', '-i', help="folder containing YAML input output files", type=str, default="inout")
-    parser.add_argument('--res', '-r', help="folder containing json/html/image resources", type=str, default="res")
+def has_pre_parse():
+    return sys.argv[1] == "--version"
 
 
-def add_init_parser(parser):
-    parser.add_argument("init",
-                        nargs="?", help="Creates an 'inout' and 'res' folder in"
-                        " the current directory", action="store")
+def pre_parse():
+    is_version = sys.argv[1] == "--version"
+
+    if is_version:
+        parsed_args = argparse.Namespace()
+        parsed_args.version = True
+        return parsed_args
+
+    return None
+
+
+def add_start_parser(sub_parsers):
+    help = "Start the mocking services"
+    new_parser = sub_parsers.add_parser("start", help=help,
+                                        description=help)
+
+    new_parser.add_argument('--port', default=9090,
+                            type=int, help='Selects the desired port.')
+
+    new_parser.add_argument('--proxy', '-x', action='count')
+    new_parser.add_argument('--verbose', help="Set to verbose", action='count')
+
+    new_parser.add_argument('--inout', '-i', help="folder containing YAML input output files",
+                            type=str, default="inout")
+    new_parser.add_argument('--res', '-r', help="folder containing json/html/image resources",
+                            type=str, default="res")
+    new_parser.required = False
+
+
+def add_init_parser(sub_parsers):
+    help = "Creates an 'inout' and 'res' folder in the current directory"
+    new_parser = sub_parsers.add_parser("init",
+                                        help=help,
+                                        description=help)
+    new_parser.required = False
+
+
+def add_cleanup_parser(sub_parsers):
+    help = "Remove HTTP/HTTPS proxy setting from all networks"
+    sub_parsers.add_parser("cleanup",
+                           help=help,
+                           description=help)
 
 
 def validate_input(parsed_args):
