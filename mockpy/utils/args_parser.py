@@ -12,13 +12,13 @@ def parse():
 
     sub_parsers = parser.add_subparsers(title="Commands", dest="sub")
 
-    parser.add_argument('--version', help="Display version")
+    parser.add_argument('--version', help="Display version", action="count")
 
     add_start_parser(sub_parsers)
     add_init_parser(sub_parsers)
     add_cleanup_parser(sub_parsers)
 
-    if has_pre_parse():
+    if has_pre_parse(parser):
         return pre_parse()
 
     parsed_args = parser.parse_args()
@@ -32,7 +32,11 @@ def parse():
     return parsed_args
 
 
-def has_pre_parse():
+def has_pre_parse(parser):
+    if len(sys.argv) < 2:
+        parser.print_help()
+        sys.exit(0)
+
     return sys.argv[1] == "--version"
 
 
