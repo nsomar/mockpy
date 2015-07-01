@@ -2,4 +2,4 @@ request:
     url: .*mockpy_hello_world$
 
 response:
-    body: "Hello world!"
+    body: "Hello world from mockpy!"
