@@ -5,7 +5,7 @@
 Mockpy is a python open source line utility to quickly create mock servers on Mac OS X.
 Mockpy is inspired by wiremock and uses libmproxy for the proxy functionality.
 
-mockpy works by reading a list of configuration files in the YAML format, it uses these configurations to match the http request received and return an http response based on the matched YAML file configuration.
+Mockpy works by reading a list of configuration files in the YAML format, it uses these configurations to match the HTTP request received and return an http response based on the matched YAML file configuration.
 
 # Why mockpy
 - You want a very lightweight utility to quickly create a mock API
@@ -15,7 +15,13 @@ mockpy works by reading a list of configuration files in the YAML format, it use
 
 # Installation
 
-Mockpy can be installed as a python wheel using `pip` or as a standalone binary using `homebrew`
+Mockpy can be installed as a python wheel using `pip`, as a standalone binary using `homebrew`, or by downloading the [archived binary](https://github.com/oarrabi/mockpy/releases) from release.
+
+## Installing using brew (recommended)
+Install using brew tap
+
+    brew tap oarrabi/tap
+    brew install mockpy
 
 ## Installing with pip
 
@@ -24,12 +30,6 @@ Make sure you have [pip](https://pip.pypa.io/en/latest/installing.html) installe
 Run the following to install mockpy
 
     pip install mockpy
-
-## Installing using brew
-Install using brew tap
-
-    brew tap oarrabi/tap
-    brew install mockpy
 
 # Usage
 
@@ -57,3 +57,13 @@ Use `mockpy start` to start the standalone web server, this will setup a server 
 To start mockpy in proxy server mode use `mockpy start -x`. This command does the following:
 - Starts a proxy server on '127.0.0.1:9090'
 - Sets the macs HTTP/HTTPS settings to the created proxy server.
+
+# Documentation
+Mockpy contains a documentation that can be accessed following [this link](https://github.com/oarrabi/mockpy/wiki).
+
+# Future milestones and improvements
+Mockpy is still under development, the following is a list of tasks and improvement it still lacks:
+
+- Create a better documentation
+- Devise a proper mechanism to format the printed HTTP request and response.
+- Provide more command line flags options
