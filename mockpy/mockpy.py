@@ -24,20 +24,38 @@ def start():
         perform_cleanup()
 
     if args.proxy:
-        info("Enabling network proxy on {0}:{1}".format("127.0.0.1", args.port))
+        previous_http_proxy = get_updated_network_proxy(args)
 
-        warn("Note: sudo password may be asked to enable network http/https proxies\n")
-
-        network = NetworkConfig(args.port)
-        network.apply()
-
+        show_visit_certs_if_needed(args)
         print_environment(args)
         info("Starting proxy server")
-        start_proxy_server(args.port, args.inout, args.res, network.previous_http_proxy)
+        start_proxy_server(args.port, args.inout, args.res, previous_http_proxy)
     else:
         info("Starting mock server")
         print_environment(args)
         start_mock_server(args.port, args.inout, args.res)
+
+
+def get_updated_network_proxy(args):
+    if not args.no_proxy_update:
+        return None
+
+    try:
+        info("Enabling network proxy on {0}:{1}".format("127.0.0.1", args.port))
+        warn("Note: sudo password may be asked to enable network http/https proxies\n")
+        network = NetworkConfig(args.port, not args.no_https)
+        network.apply()
+
+        return network.previous_http_proxy
+    except KeyboardInterrupt:
+        error("Exiting...")
+        sys.exit(0)
+
+
+def show_visit_certs_if_needed(args):
+    if args.no_proxy_update and not args.no_https:
+        warn("You are using HTTPS proxying, make sure to visit http://mockpycerts.com to install "
+             "SSL certificates on your machine\n")
 
 
 def print_environment(args):
@@ -57,11 +75,15 @@ def perform_init():
 
 
 def perform_cleanup():
-    info("Turning off HTTP/HTTPS proxy for all networks...")
-    warn("Note: sudo password may be asked to enable network http/https proxies\n")
-    turn_off_all_proxies()
-    success("\nHTTP/HTTPS proxy settings turned off successfully")
-    sys.exit(0)
+    try:
+        info("Turning off HTTP/HTTPS proxy for all networks...")
+        warn("Note: sudo password may be asked to enable network http/https proxies\n")
+        turn_off_all_proxies()
+        success("\nHTTP/HTTPS proxy settings turned off successfully")
+    except KeyboardInterrupt:
+        error("Exiting...")
+    finally:
+        sys.exit(0)
 
 
 def print_version():

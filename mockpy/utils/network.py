@@ -10,7 +10,8 @@ from .config import *
 
 class NetworkConfig(object):
 
-    def __init__(self, port):
+    def __init__(self, port, allow_https=True):
+        self.allow_https = allow_https
         self.port = str(port)
         self.proxy_settings = {}
 
@@ -24,7 +25,9 @@ class NetworkConfig(object):
         self.previous_proxy_settings = get_proxy_settings()
 
         self.previous_http_proxy = self.get_previous_proxy("http")
-        self.previous_https_proxy = self.get_previous_proxy("https")
+
+        if self.allow_https:
+            self.previous_https_proxy = self.get_previous_proxy("https")
 
         self.proxy_settings = self.update_proxy_settings()
 
@@ -36,7 +39,11 @@ class NetworkConfig(object):
 
     def update_proxy_settings(self):
         new_settings = {}
-        dict = {"http": ("127.0.0.1", self.port, True), "https": ("127.0.0.1", self.port, True)}
+        dict = {"http": ("127.0.0.1", self.port, True)}
+
+        if self.allow_https:
+            dict["https"] = ("127.0.0.1", self.port, True)
+
         for network_name in self.previous_proxy_settings.keys():
             new_settings[network_name] = dict
 
@@ -136,6 +143,10 @@ def apply_proxy_settings(settings):
 def set_proxy(network_name, values, secure=False):
     proxy = ["-setwebproxy", "-setsecurewebproxy"][secure]
     key = ["http", "https"][secure]
+
+    if key not in values:
+        return
+
     server, port, enabled = values[key]
 
     cmd = "sudo networksetup {0} '{1}' {2} {3}".format(proxy, network_name, server, port)

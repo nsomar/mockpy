@@ -37,7 +37,12 @@ class Status(object):
 
     @staticmethod
     def is_status(url):
-        return re.match("^.*(127\.0\.0\.1|localhost|mockpy)(:\d*)?/status$", url) is not None
+        is_status_url = re.match("^.*(127\.0\.0\.1|localhost|mockpy)(:\d*)?/status$", url) is not None
+
+        if not is_status_url:
+            is_status_url = re.match("^.*mockpystatus.com.*", url) is not None
+
+        return is_status_url
 
 
 def check_status_cherry_py(func):
