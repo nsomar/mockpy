@@ -47,6 +47,20 @@ This will create two folders:
 
 To understand the YAML file format, please refer to the documentation.
 
+### Sample 
+
+    request:
+        method: GET
+        url: .*sample/matching.*
+    response:
+        status: 200
+        body: hello world
+
+The above catches all the GET request that has `sample/matching` in its URL, and returns the status 200. 
+Requesting `http://localhost:9090/sample/matching` returns a response with `"hello world"` in its body.
+
+More information about the YAML request/response check out the [wikis](https://github.com/oarrabi/mockpy/wiki/YAML-request-response--file-format).
+
 ## Start the mock server
 The mock server can be started as a standalone web server, or as a proxy server.
 
