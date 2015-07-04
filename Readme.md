@@ -1,10 +1,10 @@
 # Mockpy
 
-[![Build Status](https://travis-ci.org/oarrabi/mockpy.svg?branch=master)](https://travis-ci.org/oarrabi/mockpy)
+[![Build Status](https://travis-ci.org/oarrabi/mockpy.svg?branch=master)](https://travis-ci.org/oarrabi/mockpy)  [![PyPI version](https://badge.fury.io/py/mockpy.svg)](http://badge.fury.io/py/mockpy)
 
-Mockpy is a python open source line utility to quickly create mock servers on Mac OS X.
+Mockpy is a python command line utility to create development mock servers under Mac OS X [easily](http://showterm.io/acdf6f73565db33cc1725).    
+
 Mockpy is inspired by wiremock and uses libmproxy for the proxy functionality.
-
 Mockpy works by reading a list of configuration files in the YAML format, it uses these configurations to match the HTTP request received and return an http response based on the matched YAML file configuration.
 
 # Why mockpy
@@ -12,6 +12,7 @@ Mockpy works by reading a list of configuration files in the YAML format, it use
 - No need to edit your app code as it uses proxy mocking
 - Works on top of proven technology ([mitmproxy](https://mitmproxy.org/) and [cherrypi](http://www.cherrypy.org/))
 - Update to the mock API are picked up from files without the need to start/restart the server again.
+- It works correctly with other network proxy debuggers like [Charles](http://www.charlesproxy.com/).
 
 # Installation
 
@@ -33,7 +34,9 @@ Run the following to install mockpy
 
 # Usage
 
-Bellow is a description of the basic operations that `mockpy` provides, for a more complete understanding please refer to [the wikis](https://github.com/oarrabi/mockpy/wiki).
+It takes less than a minute to create a mock server with mockpy, check this [demo](http://showterm.io/acdf6f73565db33cc1725).
+
+Bellow is a description of the basic operations that `mockpy` provides, for a more comprehensive list, please refer to [the wikis](https://github.com/oarrabi/mockpy/wiki).
 
 ## Initialize a directory
 Initialize a the current folder by running:
@@ -74,6 +77,12 @@ To start mockpy in proxy server mode use `mockpy start -x`. This command does th
 
 # Documentation
 Mockpy contains a documentation that can be accessed following [this link](https://github.com/oarrabi/mockpy/wiki).
+
+## Clean up
+Running mockpy with in web-proxy mode with `mockpy start -x` changes mac web proxy to the newly created proxy. Mac proxy settings are then reset when mockpy exits.    
+If you end mockpy unexpectedly, such as closing the terminal window, mockpy has no way of resetting the mac proxy. In order to reset them again to their defaults run:
+
+    mockpy cleanup
 
 # Future milestones and improvements
 Mockpy is still under development, the following is a list of tasks and improvement it still lacks:
