@@ -4,6 +4,8 @@
 
 Mockpy is a python command line utility to create development mock servers under Mac OS X [easily](http://showterm.io/acdf6f73565db33cc1725).    
 
+![Demo](https://raw.githubusercontent.com/oarrabi/mockpy/master/resources/proxy_demo.gif)
+
 Mockpy is inspired by wiremock and uses libmproxy for the proxy functionality.
 Mockpy works by reading a list of configuration files in the YAML format, it uses these configurations to match the HTTP request received and return an http response based on the matched YAML file configuration.
 
@@ -13,6 +15,7 @@ Mockpy works by reading a list of configuration files in the YAML format, it use
 - Works on top of proven technology ([mitmproxy](https://mitmproxy.org/) and [cherrypi](http://www.cherrypy.org/))
 - Update to the mock API are picked up from files without the need to start/restart the server again.
 - It works correctly with other network proxy debuggers like [Charles](http://www.charlesproxy.com/).
+- It creates HTTP and HTTPS proxies, for HTTPS [read here](https://github.com/oarrabi/mockpy/wiki/HTTPS-proxying-SSL-certificates).
 
 # Installation
 
