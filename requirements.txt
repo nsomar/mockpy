@@ -1,5 +1,5 @@
 pytest
-mitmproxy
+mitmproxy==0.13.0
 cherrypy
 termcolor
 watchdog
